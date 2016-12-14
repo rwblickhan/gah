@@ -13,12 +13,16 @@
 
 //gah
 #include <GameEntity.h>
+#include <WorldStateRenderCallback.h>
+#include <WorldStateUpdateCallback.h>
 
-class GameWorld {
+class GameWorld : public WorldStateRenderCallback, WorldStateUpdateCallback {
+
+public:
 
     GameWorld();
 
-    ~GameWorld();
+    virtual ~GameWorld();
 
     void Setup();
 
@@ -26,15 +30,23 @@ class GameWorld {
 
     void Run();
 
+    //WorldStateRenderCallback methods
+
+    virtual Quadrant GetCursorQuadrant() override;
+
+private:
+
     void HandleInput();
 
     void Update();
 
     void Render();
 
-private:
+    void SetCursorQuadrant(int32_t x, int32_t y);
+
     std::vector<std::shared_ptr<GameEntity>> m_entityList;
     bool m_running;
+    Quadrant m_curQuad = Quadrant::DownLeft;
     SDL_Window* m_pMainWindow;
     SDL_Renderer* m_pRen;
 };

@@ -4,12 +4,15 @@
 
 #pragma once
 
+#include <WorldStateRenderCallback.h>
+#include <WorldStateUpdateCallback.h>
+
 class GameEntity {
 
 public:
 
-    virtual void Update() = 0;
+    virtual void Update(WorldStateUpdateCallback* worldState) = 0;
 
-    virtual void Render() = 0;
+    virtual void Render(WorldStateRenderCallback* worldState) = 0;
 
 };
