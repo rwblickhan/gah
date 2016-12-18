@@ -35,5 +35,8 @@ void TestEntity::Render(WorldStateRenderCallback* worldState) {
         case Quadrant::DownRight:
             std::cout << "Cursor in bottom right" << std::endl;
             break;
+        case Quadrant::Invalid:
+        default:
+            std::cout << "Uh, something went really wrong..." << std::endl;
     }
 }

@@ -31,6 +31,8 @@ public:
 
     //WorldStateRenderCallback methods
 
+    virtual WindowPos GetCursorPos() override;
+
     virtual Quadrant GetCursorQuadrant() override;
 
 private:
@@ -41,11 +43,11 @@ private:
 
     void Render();
 
-    void SetCursorQuadrant(int32_t x, int32_t y);
+    void SetCursorPos(int x, int y);
 
     std::vector<std::shared_ptr<GameEntity>> m_entityList;
     bool m_running;
-    Quadrant m_curQuad = Quadrant::DownLeft;
+    WindowPos cursorPos;
     SDL_Window* m_pMainWindow;
     SDL_Renderer* m_pRen;
 };

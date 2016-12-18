@@ -16,7 +16,8 @@ include_directories(${PROJECT_SOURCE_DIR}/src/inc)
 set(SOURCE_FILES
         src/GameWorld.cpp
         src/main.cpp
-        src/TestEntity.cpp)
+        src/TestEntity.cpp
+        src/TestMoustachioEntity.cpp)
 
 add_executable(gah ${SOURCE_FILES})
 target_link_libraries(gah ${SDL2_LIBRARY}

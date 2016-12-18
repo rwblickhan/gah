@@ -8,5 +8,12 @@ enum struct Quadrant {
     UpLeft = 0,
     UpRight,
     DownLeft,
-    DownRight
+    DownRight,
+    Invalid
+};
+
+//Represents an (x,y) position relative to the main window
+struct WindowPos {
+    int x;
+    int y;
 };

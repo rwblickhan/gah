@@ -9,6 +9,8 @@
 class WorldStateRenderCallback {
 public:
 
+    virtual WindowPos GetCursorPos() = 0;
+
     virtual Quadrant GetCursorQuadrant() = 0;
 
 };

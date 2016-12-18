@@ -8,10 +8,11 @@
 //sdl
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_events.h>
+#include <SDL_image.h>
 
 //gah
 #include <GameWorld.h>
-#include <TestEntity.h>
+#include <TestMoustachioEntity.h>
 
 GameWorld::GameWorld()
 {
@@ -33,12 +34,14 @@ void GameWorld::Setup() {
     {
         std::cout << "SDL_CreateWindow error: " << SDL_GetError() << std::endl;
         Deinit();
+        return;
     }
     m_pRen = SDL_CreateRenderer(m_pMainWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (m_pRen == nullptr)
     {
         std::cout << "SDL_CreateRenderer error: " << SDL_GetError() << std::endl;
         Deinit();
+        return;
     }
     //TODO make this nicer
     std::string loadingPath = std::string(SDL_GetBasePath()) + "assets/loading.bmp";
@@ -59,8 +62,18 @@ void GameWorld::Setup() {
     SDL_RenderCopy(m_pRen, m_pTempTex, NULL, NULL);
     SDL_RenderPresent(m_pRen);
 
-    std::shared_ptr<GameEntity> testEntity(new TestEntity());
+    if (!IMG_Init(IMG_INIT_PNG)) {
+        std::cout << "Error: Couldn't init png loader, error: " << SDL_GetError() << std::endl;
+    } else {
+        std::cout << "Successfully initialized png loader" << std::endl;
+    }
+
+    std::shared_ptr<GameEntity> testEntity(new TestMoustachioEntity());
     m_entityList.push_back(testEntity);
+    for (auto& entity: m_entityList)
+    {
+        entity->Init(m_pRen);
+    }
 }
 
 void GameWorld::Deinit() {
@@ -90,7 +103,7 @@ void GameWorld::HandleInput() {
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_MOUSEMOTION:
-                SetCursorQuadrant(event.motion.x, event.motion.y);
+                SetCursorPos(event.motion.x, event.motion.y);
                 break;
             case SDL_KEYDOWN:
                 if (event.key.keysym.sym == SDLK_q) m_running = false;
@@ -117,21 +130,20 @@ void GameWorld::Render() {
     }
 }
 
-void GameWorld::SetCursorQuadrant(int32_t x, int32_t y) {
-    if (x < 240 && y < 320) {
-        m_curQuad = Quadrant::UpLeft;
-    }
-    if (x < 240 && y >= 320) {
-        m_curQuad = Quadrant::DownLeft;
-    }
-    if (x >= 240 && y < 320) {
-        m_curQuad = Quadrant::UpRight;
-    }
-    if (x >= 240 && y >= 320) {
-        m_curQuad = Quadrant::DownRight;
-    }
+void GameWorld::SetCursorPos(int x, int y) {
+    cursorPos.x = x;
+    cursorPos.y = y;
+}
+
+WindowPos GameWorld::GetCursorPos() {
+    return cursorPos;
 }
 
 Quadrant GameWorld::GetCursorQuadrant() {
-    return m_curQuad;
+    if (cursorPos.x < 320 && cursorPos.y < 240) return Quadrant::UpLeft;
+    if (cursorPos.x < 320 && cursorPos.y >= 240) return Quadrant::DownLeft;
+    if (cursorPos.x >= 320 && cursorPos.y < 240) return Quadrant::UpRight;
+    if (cursorPos.x >= 320 && cursorPos.y >= 240) return Quadrant::DownRight;
+    return Quadrant::Invalid;
+
 }
