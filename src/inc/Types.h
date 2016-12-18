@@ -4,6 +4,9 @@
 
 #pragma once
 
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+
 enum struct Quadrant {
     UpLeft = 0,
     UpRight,

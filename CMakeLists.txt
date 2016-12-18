@@ -17,7 +17,8 @@ set(SOURCE_FILES
         src/GameWorld.cpp
         src/main.cpp
         src/TestEntity.cpp
-        src/TestMoustachioEntity.cpp)
+        src/TestMoustachioEntity.cpp
+        src/TestCookieEntity.cpp)
 
 add_executable(gah ${SOURCE_FILES})
 target_link_libraries(gah ${SDL2_LIBRARY}

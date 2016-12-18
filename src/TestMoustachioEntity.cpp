@@ -102,7 +102,6 @@ void TestMoustachioEntity::Update(WorldStateUpdateCallback* worldState) {
 void TestMoustachioEntity::Render(WorldStateRenderCallback* worldState) {
     Quadrant quad = worldState->GetCursorQuadrant();
 
-    SDL_RenderClear(m_pMainWinRen);
     switch (quad) {
         case Quadrant::UpLeft:
             SDL_RenderCopy(m_pMainWinRen, m_pIconUL, 0, 0);
@@ -120,5 +119,4 @@ void TestMoustachioEntity::Render(WorldStateRenderCallback* worldState) {
             std::cout << "Problem occurred rendering TestMoustachioEntity" << std::endl;
             return;
     }
-    SDL_RenderPresent(m_pMainWinRen);
 }

@@ -13,6 +13,7 @@
 //gah
 #include <GameWorld.h>
 #include <TestMoustachioEntity.h>
+#include <TestCookieEntity.h>
 
 GameWorld::GameWorld()
 {
@@ -29,7 +30,7 @@ void GameWorld::Setup() {
     {
         std::cout << "SDL_Init error: " << SDL_GetError() << std::endl;
     }
-    m_pMainWindow = SDL_CreateWindow("Main Window", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
+    m_pMainWindow = SDL_CreateWindow("Main Window", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (m_pMainWindow == nullptr)
     {
         std::cout << "SDL_CreateWindow error: " << SDL_GetError() << std::endl;
@@ -68,8 +69,10 @@ void GameWorld::Setup() {
         std::cout << "Successfully initialized png loader" << std::endl;
     }
 
-    std::shared_ptr<GameEntity> testEntity(new TestMoustachioEntity());
-    m_entityList.push_back(testEntity);
+    std::shared_ptr<GameEntity> moustachioEntity(new TestMoustachioEntity());
+    std::shared_ptr<GameEntity> cookieEntity(new TestCookieEntity());
+    m_entityList.push_back(moustachioEntity);
+    m_entityList.push_back(cookieEntity);
     for (auto& entity: m_entityList)
     {
         entity->Init(m_pRen);
@@ -124,10 +127,13 @@ void GameWorld::Update() {
 
 void GameWorld::Render() {
 
+    SDL_SetRenderDrawColor(m_pRen, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderClear(m_pRen);
     for (auto& entity : m_entityList)
     {
         entity->Render(static_cast<WorldStateRenderCallback*>(this));
     }
+    SDL_RenderPresent(m_pRen);
 }
 
 void GameWorld::SetCursorPos(int x, int y) {
@@ -140,10 +146,10 @@ WindowPos GameWorld::GetCursorPos() {
 }
 
 Quadrant GameWorld::GetCursorQuadrant() {
-    if (cursorPos.x < 320 && cursorPos.y < 240) return Quadrant::UpLeft;
-    if (cursorPos.x < 320 && cursorPos.y >= 240) return Quadrant::DownLeft;
-    if (cursorPos.x >= 320 && cursorPos.y < 240) return Quadrant::UpRight;
-    if (cursorPos.x >= 320 && cursorPos.y >= 240) return Quadrant::DownRight;
+    if (cursorPos.x < SCREEN_WIDTH / 2 && cursorPos.y < SCREEN_HEIGHT / 2) return Quadrant::UpLeft;
+    if (cursorPos.x < SCREEN_WIDTH / 2 && cursorPos.y >= SCREEN_HEIGHT / 2) return Quadrant::DownLeft;
+    if (cursorPos.x >= SCREEN_WIDTH / 2 && cursorPos.y < SCREEN_HEIGHT / 2) return Quadrant::UpRight;
+    if (cursorPos.x >= SCREEN_WIDTH / 2 && cursorPos.y >= SCREEN_HEIGHT / 2) return Quadrant::DownRight;
     return Quadrant::Invalid;
 
 }
