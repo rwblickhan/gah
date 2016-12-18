@@ -6,8 +6,8 @@
 #include <iostream>
 
 //sdl
-#include <SDL.h>
-#include <SDL_events.h>
+#include <SDL2/SDL_video.h>
+#include <SDL2/SDL_events.h>
 
 //gah
 #include <GameWorld.h>

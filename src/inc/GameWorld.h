@@ -8,8 +8,7 @@
 #include <vector>
 
 //SDL
-#include <SDL_video.h>
-#include <SDL_render.h>
+#include <SDL2/SDL.h>
 
 //gah
 #include <GameEntity.h>
