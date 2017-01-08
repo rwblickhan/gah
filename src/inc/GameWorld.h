@@ -12,6 +12,7 @@
 
 //gah
 #include <GameEntity.h>
+#include <EntityCache.h>
 #include <WorldStateRenderCallback.h>
 #include <WorldStateUpdateCallback.h>
 
@@ -46,6 +47,7 @@ private:
     void SetCursorPos(int x, int y);
 
     std::vector<std::shared_ptr<GameEntity>> m_entityList;
+    std::shared_ptr<EntityCache> m_pCache;
     bool m_running;
     WindowPos cursorPos;
     SDL_Window* m_pMainWindow;

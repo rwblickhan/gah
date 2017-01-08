@@ -22,7 +22,7 @@ TestCookieEntity::~TestCookieEntity() {
     }
 }
 
-void TestCookieEntity::Init(SDL_Renderer* mainWinRen) {
+void TestCookieEntity::Init(SDL_Renderer* mainWinRen, std::shared_ptr<EntityCache> cache) {
 
     m_pMainWinRen = mainWinRen;
 

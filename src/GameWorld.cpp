@@ -69,13 +69,15 @@ void GameWorld::Setup() {
         std::cout << "Successfully initialized png loader" << std::endl;
     }
 
+    m_pCache = std::make_shared<EntityCache>();
+    m_pCache->LoadAssets(m_pRen);
     std::shared_ptr<GameEntity> moustachioEntity(new TestMoustachioEntity());
     std::shared_ptr<GameEntity> cookieEntity(new TestCookieEntity());
     m_entityList.push_back(moustachioEntity);
     m_entityList.push_back(cookieEntity);
     for (auto& entity: m_entityList)
     {
-        entity->Init(m_pRen);
+        entity->Init(m_pRen, m_pCache);
     }
 }
 

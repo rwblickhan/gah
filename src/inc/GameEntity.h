@@ -8,6 +8,7 @@
 #include <SDL2/SDL.h>
 
 //gah
+#include <EntityCache.h>
 #include <WorldStateRenderCallback.h>
 #include <WorldStateUpdateCallback.h>
 
@@ -15,7 +16,7 @@ class GameEntity {
 
 public:
 
-    virtual void Init(SDL_Renderer* mainWinRen) = 0;
+    virtual void Init(SDL_Renderer* mainWinRen, std::shared_ptr<EntityCache> cache) = 0;
 
     virtual void Update(WorldStateUpdateCallback* worldState) = 0;
 

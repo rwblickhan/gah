@@ -12,7 +12,7 @@ public:
     TestCookieEntity();
     virtual ~TestCookieEntity();
 
-    virtual void Init(SDL_Renderer* mainWinRen) override;
+    virtual void Init(SDL_Renderer* mainWinRen, std::shared_ptr<EntityCache> cache) override;
 
     virtual void Update(WorldStateUpdateCallback* worldState) override;
 
