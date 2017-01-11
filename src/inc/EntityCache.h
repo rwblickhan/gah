@@ -4,19 +4,10 @@
 
 #pragma once
 
-class EntityCache {
-
-public:
-
-    EntityCache();
-    ~EntityCache();
-
-    void LoadAssets(SDL_Renderer* mainWinRen);
-
+struct EntityCache {
     //NOTE: cache owns all textures
     SDL_Texture* m_pIconUL = nullptr;
     SDL_Texture* m_pIconUR = nullptr;
     SDL_Texture* m_pIconDL = nullptr;
     SDL_Texture* m_pIconDR = nullptr;
-
 };

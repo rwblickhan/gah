@@ -13,6 +13,7 @@
 //gah
 #include <GameEntity.h>
 #include <EntityCache.h>
+#include <AssetLoader.h>
 #include <WorldStateRenderCallback.h>
 #include <WorldStateUpdateCallback.h>
 
@@ -48,6 +49,8 @@ private:
 
     std::vector<std::shared_ptr<GameEntity>> m_entityList;
     std::shared_ptr<EntityCache> m_pCache;
+    //TODO make this unique ptr?
+    std::shared_ptr<AssetLoader> m_pAssetLoader;
     bool m_running;
     WindowPos cursorPos;
     SDL_Window* m_pMainWindow;

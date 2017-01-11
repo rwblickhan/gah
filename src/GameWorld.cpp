@@ -70,7 +70,8 @@ void GameWorld::Setup() {
     }
 
     m_pCache = std::make_shared<EntityCache>();
-    m_pCache->LoadAssets(m_pRen);
+    m_pAssetLoader = std::make_shared<AssetLoader>();
+    m_pAssetLoader->LoadAssets(m_pRen, m_pCache);
     std::shared_ptr<GameEntity> moustachioEntity(new TestMoustachioEntity());
     std::shared_ptr<GameEntity> cookieEntity(new TestCookieEntity());
     m_entityList.push_back(moustachioEntity);

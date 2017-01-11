@@ -19,7 +19,7 @@ set(SOURCE_FILES
         src/TestEntity.cpp
         src/TestMoustachioEntity.cpp
         src/TestCookieEntity.cpp
-        src/EntityCache.cpp)
+        src/AssetLoader.cpp)
 
 add_executable(gah ${SOURCE_FILES})
 target_link_libraries(gah ${SDL2_LIBRARY}
