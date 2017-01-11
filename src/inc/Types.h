@@ -20,3 +20,5 @@ struct WindowPos {
     int x;
     int y;
 };
+
+typedef std::tuple<double, double> Vec2;
