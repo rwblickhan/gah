@@ -73,4 +73,18 @@ void AssetLoader::LoadAssets(SDL_Renderer *mainWinRen, std::shared_ptr<EntityCac
         loadedSurface = nullptr;
     }
 
+    //load cookie icon
+    path = std::string(SDL_GetBasePath()) + "assets/cookie.png";
+    loadedSurface = IMG_Load(path.c_str());
+    if (loadedSurface == nullptr) {
+        std::cout << "Error: Couldn't load given path: " << path << ": error: " << SDL_GetError() << std::endl;
+    } else {
+        cache->m_pIconCookie = SDL_CreateTextureFromSurface(mainWinRen, loadedSurface);
+        if (cache->m_pIconCookie == nullptr) {
+            std::cout << "Error: Couldn't create texture, error: " << SDL_GetError() << std::endl;
+        }
+        delete loadedSurface;
+        loadedSurface = nullptr;
+    }
+
 }

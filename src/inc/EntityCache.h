@@ -10,4 +10,5 @@ struct EntityCache {
     SDL_Texture* m_pIconUR = nullptr;
     SDL_Texture* m_pIconDL = nullptr;
     SDL_Texture* m_pIconDR = nullptr;
+    SDL_Texture* m_pIconCookie = nullptr;
 };

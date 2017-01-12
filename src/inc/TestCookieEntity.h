@@ -6,6 +6,7 @@
 
 //gah
 #include <GameEntity.h>
+#include <EntityCache.h>
 
 class TestCookieEntity : public GameEntity {
 public:
@@ -20,6 +21,6 @@ public:
 
 private:
     SDL_Renderer* m_pMainWinRen = nullptr;
-    SDL_Texture* m_pIconCookie = nullptr;
+    std::shared_ptr<EntityCache> m_pCache = nullptr;
 
 };

@@ -19,7 +19,6 @@ public:
     virtual void Render(WorldStateRenderCallback* worldState) override;
 
 private:
-
     SDL_Renderer* m_pMainWinRen = nullptr;
     std::shared_ptr<EntityCache> m_pCache = nullptr;
 };

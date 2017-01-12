@@ -24,9 +24,6 @@ void TestMoustachioEntity::Init(SDL_Renderer* mainWinRen, std::shared_ptr<Entity
     m_pMainWinRen = mainWinRen;
     m_pCache = cache;
 
-    //TODO put all asset loading in a shared cache
-    //TODO give this nicer error handling
-
 }
 
 void TestMoustachioEntity::Update(WorldStateUpdateCallback* worldState) {
