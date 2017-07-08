@@ -6,6 +6,7 @@
 
 //std
 #include <vector>
+#include <memory>
 
 //SDL
 #include <SDL2/SDL.h>
