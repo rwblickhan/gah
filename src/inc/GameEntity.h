@@ -4,6 +4,9 @@
 
 #pragma once
 
+//std
+#include <memory>
+
 //sdl
 #include <SDL2/SDL.h>
 
