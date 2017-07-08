@@ -16,6 +16,15 @@
 #include <TestCookieEntity.h>
 
 GameWorld::GameWorld()
+    : m_entityList()
+    , m_cache()
+    , m_assetLoader()
+    , m_running(false)
+    , m_cursorPos()
+    , m_mainWindow(SDL_CreateWindow("Main Window", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN),
+                   [](SDL_Window* win){SDL_DestroyWindow(win);})
+    , m_renderer(SDL_CreateRenderer(m_mainWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC),
+                 [](SDL_Renderer* ren){SDL_DestroyRenderer(ren);})
 {
 
 }
@@ -26,24 +35,6 @@ GameWorld::~GameWorld()
 }
 
 void GameWorld::Setup() {
-    if (SDL_Init(SDL_INIT_VIDEO))
-    {
-        std::cout << "SDL_Init error: " << SDL_GetError() << std::endl;
-    }
-    m_pMainWindow = SDL_CreateWindow("Main Window", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (m_pMainWindow == nullptr)
-    {
-        std::cout << "SDL_CreateWindow error: " << SDL_GetError() << std::endl;
-        Deinit();
-        return;
-    }
-    m_pRen = SDL_CreateRenderer(m_pMainWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (m_pRen == nullptr)
-    {
-        std::cout << "SDL_CreateRenderer error: " << SDL_GetError() << std::endl;
-        Deinit();
-        return;
-    }
     //TODO make this nicer
     std::string loadingPath = std::string(SDL_GetBasePath()) + "assets/loading.bmp";
     SDL_Surface* img = SDL_LoadBMP(loadingPath.c_str());
@@ -52,16 +43,16 @@ void GameWorld::Setup() {
         Deinit();
         return;
     }
-    SDL_Texture* m_pTempTex = SDL_CreateTextureFromSurface(m_pRen, img);
+    SDL_Texture* m_pTempTex = SDL_CreateTextureFromSurface(m_renderer.get(), img);
     SDL_FreeSurface(img);
     if (m_pTempTex == nullptr) {
         std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
         Deinit();
         return;
     }
-    SDL_RenderClear(m_pRen);
-    SDL_RenderCopy(m_pRen, m_pTempTex, NULL, NULL);
-    SDL_RenderPresent(m_pRen);
+    SDL_RenderClear(m_renderer.get());
+    SDL_RenderCopy(m_renderer.get(), m_pTempTex, NULL, NULL);
+    SDL_RenderPresent(m_renderer.get());
 
     if (!IMG_Init(IMG_INIT_PNG)) {
         std::cout << "Error: Couldn't init png loader, error: " << SDL_GetError() << std::endl;
@@ -69,28 +60,20 @@ void GameWorld::Setup() {
         std::cout << "Successfully initialized png loader" << std::endl;
     }
 
-    m_pCache = std::make_shared<EntityCache>();
-    m_pAssetLoader = std::make_shared<AssetLoader>();
-    m_pAssetLoader->LoadAssets(m_pRen, m_pCache);
+    m_cache = std::make_shared<EntityCache>();
+    m_assetLoader.reset(new AssetLoader());
+    m_assetLoader->LoadAssets(m_renderer.get(), m_cache);
     std::shared_ptr<GameEntity> moustachioEntity(new TestMoustachioEntity());
     std::shared_ptr<GameEntity> cookieEntity(new TestCookieEntity());
     m_entityList.push_back(moustachioEntity);
     m_entityList.push_back(cookieEntity);
     for (auto& entity: m_entityList)
     {
-        entity->Init(m_pRen, m_pCache);
+        entity->Init(m_renderer.get(), m_cache);
     }
 }
 
 void GameWorld::Deinit() {
-    if (m_pRen)
-    {
-        SDL_DestroyRenderer(m_pRen);
-    }
-    if (m_pMainWindow)
-    {
-        SDL_DestroyWindow(m_pMainWindow);
-    }
     SDL_Quit();
 }
 
@@ -130,29 +113,29 @@ void GameWorld::Update() {
 
 void GameWorld::Render() {
 
-    SDL_SetRenderDrawColor(m_pRen, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(m_pRen);
+    SDL_SetRenderDrawColor(m_renderer.get(), 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_RenderClear(m_renderer.get());
     for (auto& entity : m_entityList)
     {
         entity->Render(static_cast<WorldStateRenderCallback*>(this));
     }
-    SDL_RenderPresent(m_pRen);
+    SDL_RenderPresent(m_renderer.get());
 }
 
 void GameWorld::SetCursorPos(int x, int y) {
-    cursorPos.x = x;
-    cursorPos.y = y;
+    m_cursorPos.x = x;
+    m_cursorPos.y = y;
 }
 
 WindowPos GameWorld::GetCursorPos() {
-    return cursorPos;
+    return m_cursorPos;
 }
 
 Quadrant GameWorld::GetCursorQuadrant() {
-    if (cursorPos.x < SCREEN_WIDTH / 2 && cursorPos.y < SCREEN_HEIGHT / 2) return Quadrant::UpLeft;
-    if (cursorPos.x < SCREEN_WIDTH / 2 && cursorPos.y >= SCREEN_HEIGHT / 2) return Quadrant::DownLeft;
-    if (cursorPos.x >= SCREEN_WIDTH / 2 && cursorPos.y < SCREEN_HEIGHT / 2) return Quadrant::UpRight;
-    if (cursorPos.x >= SCREEN_WIDTH / 2 && cursorPos.y >= SCREEN_HEIGHT / 2) return Quadrant::DownRight;
+    if (m_cursorPos.x < SCREEN_WIDTH / 2 && m_cursorPos.y < SCREEN_HEIGHT / 2) return Quadrant::UpLeft;
+    if (m_cursorPos.x < SCREEN_WIDTH / 2 && m_cursorPos.y >= SCREEN_HEIGHT / 2) return Quadrant::DownLeft;
+    if (m_cursorPos.x >= SCREEN_WIDTH / 2 && m_cursorPos.y < SCREEN_HEIGHT / 2) return Quadrant::UpRight;
+    if (m_cursorPos.x >= SCREEN_WIDTH / 2 && m_cursorPos.y >= SCREEN_HEIGHT / 2) return Quadrant::DownRight;
     return Quadrant::Invalid;
 
 }

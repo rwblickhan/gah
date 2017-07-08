@@ -49,11 +49,11 @@ private:
     void SetCursorPos(int x, int y);
 
     std::vector<std::shared_ptr<GameEntity>> m_entityList;
-    std::shared_ptr<EntityCache> m_pCache;
+    std::shared_ptr<EntityCache> m_cache;
     //TODO make this unique ptr?
-    std::shared_ptr<AssetLoader> m_pAssetLoader;
+    std::unique_ptr<AssetLoader> m_assetLoader;
     bool m_running;
-    WindowPos cursorPos;
-    SDL_Window* m_pMainWindow;
-    SDL_Renderer* m_pRen;
+    WindowPos m_cursorPos;
+    std::unique_ptr<SDL_Window, void(*)(SDL_Window*)> m_mainWindow;
+    std::unique_ptr<SDL_Renderer, void(*)(SDL_Renderer*)> m_renderer;
 };

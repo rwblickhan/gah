@@ -6,6 +6,7 @@ void RunVec2Tests();
 
 int main() {
     //TODO make gameworld a singleton
+    SDL_Init(SDL_INIT_VIDEO);
     GameWorld* world = new GameWorld();
     world->Setup();
     world->Run();
