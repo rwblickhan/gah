@@ -10,17 +10,12 @@
 
 class TestCookieEntity : public GameEntity {
 public:
-    TestCookieEntity();
-    virtual ~TestCookieEntity();
+    TestCookieEntity(std::shared_ptr<EntityCache> cache);
 
-    virtual void Init(SDL_Renderer* mainWinRen, std::shared_ptr<EntityCache> cache) override;
+    virtual ~TestCookieEntity();
 
     virtual void Update(WorldStateUpdateCallback* worldState) override;
 
-    virtual void Render(WorldStateRenderCallback* worldState) override;
-
-private:
-    SDL_Renderer* m_pMainWinRen = nullptr;
-    std::shared_ptr<EntityCache> m_pCache = nullptr;
+    virtual void Render(WorldStateRenderCallback* worldState, SDL_Renderer* renderer) override;
 
 };

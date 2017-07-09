@@ -9,16 +9,11 @@
 
 class TestMoustachioEntity : public GameEntity {
 public:
-    TestMoustachioEntity();
-    virtual ~TestMoustachioEntity();
+    TestMoustachioEntity(std::shared_ptr<EntityCache> cache);
 
-    virtual void Init(SDL_Renderer* mainWinRen, std::shared_ptr<EntityCache> cache) override;
+    virtual ~TestMoustachioEntity();
 
     virtual void Update(WorldStateUpdateCallback* worldState) override;
 
-    virtual void Render(WorldStateRenderCallback* worldState) override;
-
-private:
-    SDL_Renderer* m_pMainWinRen = nullptr;
-    std::shared_ptr<EntityCache> m_pCache = nullptr;
+    virtual void Render(WorldStateRenderCallback* worldState, SDL_Renderer* renderer) override;
 };

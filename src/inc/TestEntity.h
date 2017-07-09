@@ -14,10 +14,12 @@
 
 class TestEntity : public GameEntity {
 public:
-    TestEntity();
+    TestEntity(std::shared_ptr<EntityCache> cache);
+
     ~TestEntity();
 
     virtual void Update(WorldStateUpdateCallback* worldState) override;
-    virtual void Render(WorldStateRenderCallback* worldState) override;
+
+    virtual void Render(WorldStateRenderCallback* worldState, SDL_Renderer* renderer) override;
 };
 

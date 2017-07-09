@@ -8,7 +8,9 @@
 //gah
 #include <TestEntity.h>
 
-TestEntity::TestEntity(){
+TestEntity::TestEntity(std::shared_ptr<EntityCache> cache)
+    : GameEntity(cache)
+{
 
 }
 
@@ -20,7 +22,7 @@ void TestEntity::Update(WorldStateUpdateCallback* worldState) {
     std::cout << "Updating TestEntity!" << std::endl;
 }
 
-void TestEntity::Render(WorldStateRenderCallback* worldState) {
+void TestEntity::Render(WorldStateRenderCallback* worldState, SDL_Renderer* renderer) {
     switch (worldState->GetCursorQuadrant())
     {
         case Quadrant::UpLeft:

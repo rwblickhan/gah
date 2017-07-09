@@ -60,17 +60,11 @@ void GameWorld::Setup() {
         std::cout << "Successfully initialized png loader" << std::endl;
     }
 
-    m_cache = std::make_shared<EntityCache>();
-    m_assetLoader.reset(new AssetLoader());
     m_assetLoader->LoadAssets(m_renderer.get(), m_cache);
-    std::shared_ptr<GameEntity> moustachioEntity(new TestMoustachioEntity());
-    std::shared_ptr<GameEntity> cookieEntity(new TestCookieEntity());
-    m_entityList.push_back(moustachioEntity);
-    m_entityList.push_back(cookieEntity);
-    for (auto& entity: m_entityList)
-    {
-        entity->Init(m_renderer.get(), m_cache);
-    }
+    std::unique_ptr<GameEntity> moustachioEntity(new TestMoustachioEntity(m_cache));
+    std::unique_ptr<GameEntity> cookieEntity(new TestCookieEntity(m_cache));
+    m_entityList.push_back(std::move(moustachioEntity));
+    m_entityList.push_back(std::move(cookieEntity));
 }
 
 void GameWorld::Deinit() {
@@ -117,7 +111,7 @@ void GameWorld::Render() {
     SDL_RenderClear(m_renderer.get());
     for (auto& entity : m_entityList)
     {
-        entity->Render(static_cast<WorldStateRenderCallback*>(this));
+        entity->Render(static_cast<WorldStateRenderCallback*>(this), m_renderer.get());
     }
     SDL_RenderPresent(m_renderer.get());
 }
